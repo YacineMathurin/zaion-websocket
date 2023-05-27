@@ -5,10 +5,13 @@ const connectBtn = document.getElementById("connect");
 const disconnectBtn = document.getElementById("disconnect");
 let isConnected = false;
 
+// port to connect to
 const port = 3050;
 
+// connect on this button clicked
 connectBtn.addEventListener("click", main);
 
+// reset view and by the way handle button to make accessible
 function reset() {
   el1.style.display = "none";
   el2.style.display = "none";
@@ -19,6 +22,7 @@ function reset() {
 reset();
 
 function main() {
+  // connect to the server
   const client = new WebSocket(`ws://localhost:${port}`);
 
   client.addEventListener("error", () => {
@@ -34,12 +38,14 @@ function main() {
     connectBtn.style.display = "none";
   });
 
+  // display received message for the client
   client.addEventListener("message", function (event) {
     document.getElementById("result-text").textContent = event.data;
   });
 
   client.addEventListener("close", (event) => {
 
+    // detect if the client closed the link or the server crashed or not responding
     const cleanClose = event.wasClean;
 
     reset();
